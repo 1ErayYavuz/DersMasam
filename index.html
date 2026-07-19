@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DersMasam | Saf Odak</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- GİRİŞ EKRANI -->
+    <div id="giris-ekrani" class="kaplama">
+        <div class="kurulum-kutusu">
+            <h1 class="logo">Ders<span>Masam</span></h1>
+            <p class="alt-baslik">Zihnini boşalt, masaya odaklan.</p>
+
+            <div class="input-grubu">
+                <label for="dakika-input">Çalışma Süresi (Dakika)</label>
+                <input type="number" id="dakika-input" class="modern-input" placeholder="Örn: 45" min="1" max="300">
+            </div>
+
+            <div class="input-grubu">
+                <label for="motivasyon-input">Motivasyon Cümlen</label>
+                <input type="text" id="motivasyon-input" class="modern-input" placeholder="Neden buradasın?" maxlength="80">
+            </div>
+
+            <div class="input-grubu">
+                <label for="odul-input">Bitiş Ödülün</label>
+                <input type="text" id="odul-input" class="modern-input" placeholder="Kahve mi? Oyun mu?" maxlength="80">
+            </div>
+
+            <button type="button" id="baslat-btn" onclick="odagiBaslat()">MASAYI KUR</button>
+            <button type="button" class="giris-ayar-btn" onclick="ayarlariAc()">⚙ Ayarlar</button>
+            <p id="devam-ipucu" class="devam-ipucu gizli">Kayıtlı bir oturumun var. Aynı süreyle devam edebilirsin.</p>
+        </div>
+    </div>
+
+    <!-- ANA PANEL -->
+    <div id="ana-panel" class="gizli">
+        <div class="ust-serit">
+            <div id="motivasyon-alani" class="motivasyon-yazi"></div>
+            <div class="sag-araclar">
+                <div id="su-bilgisi" class="su-badge" title="Her 30 dakikada bir su hatırlatması">💧 0 Bardak</div>
+                <button type="button" onclick="ayarlariAc()" class="ust-btn" title="Ayarlar">⚙ Ayarlar</button>
+                <button type="button" onclick="tamEkran()" class="ust-btn">Tam Ekran</button>
+                <button type="button" onclick="masayiKapat()" class="ust-btn ust-btn-kirmizi">Çıkış</button>
+            </div>
+        </div>
+
+        <div class="orta-alan">
+            <div id="sayac-konteynir">
+                <div id="sayac">00:00</div>
+                <div class="progress-wrapper">
+                    <div id="bar-ic" class="progress-fill"></div>
+                </div>
+                <div id="hedef-metni" class="hedef-metni"></div>
+
+                <!-- SAYAÇ KONTROLLERİ -->
+                <div class="kontrol-butonlari">
+                    <button type="button" id="duraklat-btn" onclick="duraklatDevam()" class="kontrol-btn">⏸ Duraklat</button>
+                    <button type="button" onclick="sayaciSifirla()" class="kontrol-btn kontrol-btn-ikinci">↺ Sıfırla</button>
+                </div>
+            </div>
+
+            <!-- GÖREVLER -->
+            <div class="gorev-bolumu">
+                <div class="gorev-baslik-satir">
+                    <h3 class="gorev-baslik">Görevlerim</h3>
+                    <button type="button" id="tumunu-sil-btn" onclick="tumNotlariSil()" class="tumunu-sil-btn gizli">Tümünü Sil</button>
+                </div>
+                <div class="not-ekle-satir">
+                    <input type="text" id="not-input" class="not-ekle-input" placeholder="Yapılacak bir görev yaz..." maxlength="120">
+                    <button type="button" onclick="notEkle()" class="ekle-btn">Ekle</button>
+                </div>
+                <div id="notlar-konteynir" class="post-it-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AYARLAR PANELİ -->
+    <div id="ayarlar-kaplama" class="ayarlar-kaplama gizli" onclick="ayarDisariTik(event)">
+        <div class="ayarlar-kutu" role="dialog" aria-labelledby="ayarlar-baslik">
+            <div class="ayarlar-ust">
+                <h2 id="ayarlar-baslik">⚙ Ayarlar</h2>
+                <button type="button" class="ayar-kapat" onclick="ayarlariKapat()" title="Kapat">✕</button>
+            </div>
+
+            <label class="ayar-satir">
+                <span class="ayar-yazi">
+                    <strong>Bitiş sesi</strong>
+                    <small>Süre bitince yumuşak melodi</small>
+                </span>
+                <input type="checkbox" id="ayar-bitis-ses" onchange="ayariKaydet()">
+            </label>
+
+            <label class="ayar-satir">
+                <span class="ayar-yazi">
+                    <strong>Su hatırlatması</strong>
+                    <small>Her 30 dakikada bir hatırlat</small>
+                </span>
+                <input type="checkbox" id="ayar-su" onchange="ayariKaydet()">
+            </label>
+
+            <label class="ayar-satir">
+                <span class="ayar-yazi">
+                    <strong>Su sesi</strong>
+                    <small>Hatırlatmada kısa ses çal</small>
+                </span>
+                <input type="checkbox" id="ayar-su-ses" onchange="ayariKaydet()">
+            </label>
+
+            <p class="ayar-not">Ayarlar bu tarayıcıda saklanır.</p>
+        </div>
+    </div>
+
+    <!-- BİTİŞ EKRANI -->
+    <div id="bitis-ekrani" class="kaplama bitis-kaplama gizli">
+        <div class="kurulum-kutusu bitis-kutusu">
+            <div class="bitis-emoji">🎉</div>
+            <h2 class="bitis-baslik">Süre Bitti!</h2>
+            <p class="bitis-yazi">Harika bir iş çıkardın. Masayı hak ettin.</p>
+            <p id="bitis-odul" class="bitis-odul"></p>
+            <div class="bitis-butonlar">
+                <button type="button" onclick="tekrarBaslat()" class="bitis-btn">Tekrar Başla</button>
+                <button type="button" onclick="masayiKapat()" class="bitis-btn bitis-btn-ikinci">Ana Ekran</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
