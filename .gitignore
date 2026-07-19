@@ -1,0 +1,11 @@
+# Visual Studio
+.vs/
+
+# OS
+Thumbs.db
+Desktop.ini
+
+# Editor
+*.swp
+*.swo
+*~
